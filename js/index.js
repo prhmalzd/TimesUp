@@ -314,7 +314,7 @@ function selectWord () {
 }
 
 function startTimer () {
-	let counter = 10
+	let counter = 59
 	timer = setInterval(() => {
 		let timerSpan = document.querySelector('.timer')
 		if (counter < 1) {
