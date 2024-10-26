@@ -1,0 +1,245 @@
+/*color pallete
+	#666547
+	#fb2e01
+	#6fcb9f
+	#ffe28a
+	#fffeb3
+*/
+
+* {
+	padding: 0;
+	margin: 0;
+	color: #fffeb3;
+}
+
+/*common sections*/
+
+.button{
+  	border-radius: 16px;
+  	color: #fffeb3;
+  	cursor: pointer;
+  	padding: 13px 26px;
+}
+
+.button:active {
+	border-width: 4px 0 0;
+	border-color: #666547;
+}
+
+.container {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	background-color: #666547;
+}
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, .3);
+}
+
+/*home*/
+.home {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 50px;
+}
+
+.title {
+	font-size: 4rem;
+	font-weight: 900;
+}
+.start {
+	background-color: #1CB0F6;
+  	border: solid #1899D6;
+  	border-width: 0 0 4px;
+}
+
+
+/*add player*/
+.add-players {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: start;
+	gap: 50px;
+}
+.input-section {
+	display: grid;
+	grid-auto-columns: repeat(2, 1fr);
+	gap: 20px;
+}
+
+.input-section input {
+	padding: 13px 26px;
+	border-radius: 16px;
+	border: none;
+	background-color: #6fcb9f;
+	color: #fffeb3;
+	grid-column: 1/2;
+}
+.input-section input::placeholder {
+	color: #fffeb3;
+}
+.add-player-btn {
+	background-color: #6fcb9f;
+  	border: solid #6fdb9f;
+	grid-column: 2/3;
+	border-width: 0 0 4px;
+}
+
+.players-names div {
+	display: grid;
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 20px;
+}
+
+.delete-player {
+	background-color: #fb2e01;
+	border: solid #f35c39;
+	padding: 6px 0;
+	width: 30px;
+	border-width: 0 0 4px;
+	grid-column: 2/3;
+}
+
+.adding-players-names-done {
+	background-color: #6fcb9f;
+  	border: solid #6fdb9f;
+	border-width: 0 0 4px;
+}
+
+/* players section */
+
+.players-section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+}
+
+.player-name-button {
+	background-color: #6fcb9f;
+  	border: solid #6fdb9f;
+  	border-width: 0 0 4px;
+}
+
+/*player words*/
+
+.player-words {
+	border: 2px solid #ffe28a;
+	padding: 20px;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	background-color: #666547;
+}
+
+.player-words div {
+	display: grid;
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 8px;
+	border: 1px solid #ffe28a;
+	border-radius: 16px;
+	justify-items: center;
+	padding: 4px 10px;
+}
+
+.delete-word {
+	background-color: #fb2e01;
+	border: solid #f35c39;
+	padding: 6px 0;
+	width: 30px;
+	border-width: 0 0 4px;
+	grid-column: 2/3;
+	font-size: .5rem;
+}
+
+.player-words-selected {
+	background-color: #6fcb9f;
+  	border: solid #6fdb9f;
+	border-width: 0 0 4px;
+}
+
+/*game page*/
+
+.game-page {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 70px;
+}
+.guess-word {
+	padding: 30px 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #fffeb3;
+	color: #666547;
+	font-size: 1.5rem;
+	border-radius: 16px;
+	text-align: center;
+}
+
+.guess-buttons {
+	display: grid;
+	gap: 20px;
+}
+
+.right-guess {
+	background-color: #6fcb9f;
+  	border: solid #6fdb9f;
+	border-width: 0 0 4px;
+}
+.wrong-guess {
+	background-color: #fb2e01;
+	border: solid #f35c39;
+	border-width: 0 0 4px;
+	grid-column: 2/3;
+}
+
+/*ready page*/
+
+.ready-page {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	font-size: 2rem;
+}
+
+
+
+/* level-completed */
+
+.level-completed {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.2rem;
+	gap: 20px;
+}
+
+.next-level-btn {
+	background-color: #6fcb9f;
+  	border: solid #6fdb9f;
+	border-width: 0 0 4px;
+}
