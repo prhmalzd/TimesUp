@@ -49,13 +49,19 @@ player_name_add_button.addEventListener('click' , () => {
 	player_name_input.value = ''
 
 	let name = inputValue
-	let wordsForPlayer = pickRandomWords()
 
-	players.push({name : name , words : wordsForPlayer , score: 0})
 	addPlayerNameToList(name)
 })
 
 add_players_name_done_button.addEventListener('click' , () => {
+	let playersContainer = players_names_div.children
+
+	Array.from(playersContainer).forEach((playerContainer) => {
+		let name = playerContainer.children[0].textContent
+		let wordsForPlayer = pickRandomWords()
+		players.push({name : name , words : wordsForPlayer , score: 0})
+	})
+	
 	if (players.length > 1) {
 		state = 'players-section'
 		add_players_div.style.display = 'none'
