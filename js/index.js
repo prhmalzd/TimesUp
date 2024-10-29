@@ -46,11 +46,13 @@ player_name_input.addEventListener('input' , (event) => {
 })
 
 player_name_add_button.addEventListener('click' , () => {
+	if (!inputValue) return 
 	player_name_input.value = ''
 
 	let name = inputValue
 
 	addPlayerNameToList(name)
+	inputValue = ''
 })
 
 add_players_name_done_button.addEventListener('click' , () => {
@@ -91,6 +93,11 @@ function addPlayerNameToList (playerName) {
 }
 
 function createPlayersSection () {
+	const span = document.createElement('span')
+	span.classList.add('game-desc')
+	span.textContent = 'حالا هر بازیکن از بین هشت کلمه دوتا شو حذف کنه (برای دیدن کلمات روی اسم خودتون بزنین و کلمه هارو بقیه نباید ببینن)'
+
+	players_section_div.append(span)
 	players.forEach((player) => {
 		const button = document.createElement('button')
 		button.classList.add('player-name-button')
@@ -173,7 +180,7 @@ function createPlayerWordsSection (playerName , playerWords) {
 	const button = document.createElement('button')
 	button.classList.add('button')
 	button.classList.add('player-words-selected')
-	button.textContent = 'Done!'
+	button.textContent = 'تمومه!'
 	button.addEventListener('click' , () => {
 		if (wantedWords === 6) {
 			playerWords.forEach((word) => {
@@ -195,12 +202,13 @@ function createPlayerWordsSection (playerName , playerWords) {
 
 
 function checkPlayersDoneChoosingWords() {
-	let donePlayers = players_section_div.children.length
-	if (donePlayers === 0) {
+	let donePlayers = players_section_div.children
+	let isDone = Array.from(donePlayers).every((player) => player.tagName !== 'BUTTON' ? true : false)
+	if (isDone) {
 		const button = document.createElement('button')
 		button.classList.add('start')
 		button.classList.add('button')
-		button.textContent = 'Start'
+		button.textContent = 'شروع'
 		button.addEventListener('click' , () => {
 			createReadyPage()
 		})
@@ -216,18 +224,41 @@ function createReadyPage () {
 	level_completed_div.style.display = 'none'
 	ready_page_div.style.display = 'flex'
 
-	readyPlayer()
+	
+}
+
+function createGameDescription () {
+	ready_page_div.innerHTML = ''
+
+	const span = document.createElement('span')
+	span.classList.add('game-desc')
+
+	if (levelNumber === 1) span.textContent = 'توی دور اول. هربازیکن باید سعی کنه با توضیح دادن. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو نمیتونین رد کنین'
+	else if (levelNumber === 2) span.textContent = 'توی دور دوم. هربازیکن باید سعی کنه با پانتومیم و فقط گفتن یک کلمه. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو میتونین رد کنین ولی یادتون نره فقط یک کلمه میتونین توضیح بدین'
+	else if (levelNumber === 3) span.textContent = 'توی دور سوم. هربازیکن باید سعی کنه با پانتومیم و بدون حرف زدن. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو میتونین رد کنین .لی یادتون نره نباید صبحت کنین'
+	
+	const button = document.createElement('button')
+	button.classList.add('button')
+	button.classList.add('start')
+	button.textContent = 'حله'
+	button.addEventListener('click' , () => {
+		readyPlayer()
+	})
+
+	ready_page_div.append(span)
+	ready_page_div.append(button)
 }
 
 function readyPlayer () {
 	ready_page_div.innerHTML = ''
+
 	const nameSpan = document.createElement('span')
 	nameSpan.textContent = players[playerNumebr].name
 
 	const readyBtn = document.createElement('button')
 	readyBtn.classList.add('button')
 	readyBtn.classList.add('start')
-	readyBtn.textContent = 'ready'
+	readyBtn.textContent = 'آماده'
 	readyBtn.addEventListener('click' , () => {
 		startGame()
 	})

@@ -48,6 +48,17 @@
 	background-color: rgba(0, 0, 0, .3);
 }
 
+.game-desc-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: center;
+}
+
+.game-desc {
+	text-align: center;
+}
+
 /*home*/
 .home {
 	display: flex;
@@ -73,7 +84,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: start;
+	align-items: end;
 	gap: 50px;
 }
 .input-section {
@@ -88,7 +99,8 @@
 	border: none;
 	background-color: #6fcb9f;
 	color: #fffeb3;
-	grid-column: 1/2;
+	grid-column: 2/3;
+	text-align: right;
 }
 .input-section input::placeholder {
 	color: #fffeb3;
@@ -96,7 +108,7 @@
 .add-player-btn {
 	background-color: #6fcb9f;
   	border: solid #6fdb9f;
-	grid-column: 2/3;
+	grid-column: 1/2;
 	border-width: 0 0 4px;
 }
 
@@ -125,6 +137,7 @@
 /* players section */
 
 .players-section {
+	width: 80%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
