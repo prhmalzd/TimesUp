@@ -2,9 +2,8 @@ const start_button = document.querySelector('.start')
 const home_div = document.querySelector('.home')
 
 const add_players_div = document.querySelector('.add-players')
-const player_name_input = document.querySelector('.input-section input')
 const player_name_add_button = document.querySelector('.add-player-btn')
-const players_names_div = document.querySelector('.players-names')
+const players_names_div = document.querySelector('.input-section')
 const add_players_name_done_button = document.querySelector('.adding-players-names-done')
 
 const players_section_div = document.querySelector('.players-section')
@@ -18,7 +17,8 @@ const level_completed_div = document.querySelector('.level-completed')
 const overlay = document.querySelector('.overlay')
 
 let state = 'home'
-let inputValue
+let playerOne
+let playerTwo
 let players = []
 let playerNumebr = 0
 
@@ -28,6 +28,8 @@ let guessedWords = []
 let wrongWords = []
 
 let levelNumber = 1
+let secondLevelMessageShowed = false
+let thirdLevelMessageShowed = false
 
 let timer
 
@@ -40,28 +42,26 @@ start_button.addEventListener('click', () => {
 })
 
 
-player_name_input.addEventListener('input' , (event) => {
-	let value = event.target.value
-	inputValue = value
-})
-
-player_name_add_button.addEventListener('click' , () => {
-	if (!inputValue) return 
-	player_name_input.value = ''
-
-	let name = inputValue
-
-	addPlayerNameToList(name)
-	inputValue = ''
-})
+player_name_add_button.addEventListener('click' , createPlayersNameInputsOverlay)
 
 add_players_name_done_button.addEventListener('click' , () => {
 	let playersContainer = players_names_div.children
+	if (playersContainer.length < 3) return
+
 
 	Array.from(playersContainer).forEach((playerContainer) => {
-		let name = playerContainer.children[0].textContent
-		let wordsForPlayer = pickRandomWords()
-		players.push({name : name , words : wordsForPlayer , score: 0})
+		if (playerContainer.classList.contains('group-section')) {
+			let name = playerContainer.children[0].textContent
+			let wordsForPlayer = pickRandomWords()
+			players.push({name : name , words : wordsForPlayer , score: 0})
+		}
+	})
+	Array.from(playersContainer).forEach((playerContainer) => {
+		if (playerContainer.classList.contains('group-section')) {
+			let name = playerContainer.children[1].textContent
+			let wordsForPlayer = pickRandomWords()
+			players.push({name : name , words : wordsForPlayer , score: 0})
+		}
 	})
 	
 	if (players.length > 1) {
@@ -72,22 +72,70 @@ add_players_name_done_button.addEventListener('click' , () => {
 	}
 })
 
-function addPlayerNameToList (playerName) {
-	const div = document.createElement('div')
+function createPlayersNameInputsOverlay () {
+	overlay.innerHTML = ''
 
-	const span = document.createElement('span')
-	span.classList.add('player-name')
-	span.textContent = playerName
+	playerOne = ''
+	playerTwo = ''
+
+	state = 'players-group'
+	overlay.style.display = 'flex'
+
+	const inputPlayerOne = document.createElement('input')
+	inputPlayerOne.type = 'text'
+	inputPlayerOne.placeHolder = 'بازیکن اول'
+	inputPlayerOne.classList.add('input-name')
+	inputPlayerOne.addEventListener('input' , (event) => {
+		let value = event.target.value
+		playerOne = value
+	})
+
+	const inputPlayerTwo = document.createElement('input')
+	inputPlayerTwo.type = 'text'
+	inputPlayerTwo.placeHolder = 'بازیکن دوم'
+	inputPlayerTwo.classList.add('input-name')
+	inputPlayerTwo.addEventListener('input' , (event) => {
+		let value = event.target.value
+		playerTwo = value
+	})
+	const button = document.createElement('button')
+	button.classList.add('start')
+	button.classList.add('button')
+	button.textContent = 'تمام'
+	button.addEventListener('click' , () => {
+		if (playerOne && playerTwo) {
+			overlay.style.display = 'none'
+			addPlayerNameToList()
+		}
+	})
+
+	overlay.append(inputPlayerOne)
+	overlay.append(inputPlayerTwo)
+	overlay.append(button)
+}
+
+function addPlayerNameToList () {
+	const div = document.createElement('div')
+	div.classList.add('group-section')
+
+	const spanOne = document.createElement('span')
+	spanOne.classList.add('player-name')
+	spanOne.textContent = playerOne
+
+	const spanTwo = document.createElement('span')
+	spanTwo.classList.add('player-name')
+	spanTwo.textContent = playerTwo
 
 	const button = document.createElement('button')
 	button.classList.add('delete-player')
 	button.classList.add('button')
-	button.textContent = 'X'
+	button.textContent = 'حذف'
 	button.addEventListener('click' , () => {
 		div.remove()
 	})
 
-	div.append(span)
+	div.append(spanOne)
+	div.append(spanTwo)
 	div.append(button)
 	players_names_div.append(div)
 }
@@ -150,24 +198,24 @@ function createPlayerWordsSection (playerName , playerWords) {
 		const button = document.createElement('button')
 		button.classList.add('delete-word')
 		button.classList.add('button')
-		button.textContent = 'X'
+		button.textContent = 'حذف'
 		button.addEventListener('click', () => {
-			if (button.textContent === 'X' && wantedWords > 6) {
+			if (button.textContent === 'حذف' && wantedWords > 6) {
 				span.style.textDecoration = 'line-through'
 				span.classList.add('unwanted')
 
 				button.style.backgroundColor = '#6fcb9f'
 				button.style.borderColor = '#6fdb9f'
-				button.textContent = 'O'
+				button.textContent = 'برگشت'
 				wantedWords--
 			}
-			else if (button.textContent === 'O') {
+			else if (button.textContent === 'برگشت') {
 				span.style.textDecoration = 'none'
 				span.classList.remove('unwanted')
 
 				button.style.backgroundColor = '#fb2e01'
 				button.style.borderColor = '#f35c39'
-				button.textContent = 'X'
+				button.textContent = 'حذف'
 				wantedWords++
 			}
 		})
@@ -224,7 +272,9 @@ function createReadyPage () {
 	level_completed_div.style.display = 'none'
 	ready_page_div.style.display = 'flex'
 
-	
+	if (secondLevelMessageShowed) readyPlayer()
+	else if (thirdLevelMessageShowed) readyPlayer()
+	else createGameDescription()
 }
 
 function createGameDescription () {
@@ -234,9 +284,14 @@ function createGameDescription () {
 	span.classList.add('game-desc')
 
 	if (levelNumber === 1) span.textContent = 'توی دور اول. هربازیکن باید سعی کنه با توضیح دادن. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو نمیتونین رد کنین'
-	else if (levelNumber === 2) span.textContent = 'توی دور دوم. هربازیکن باید سعی کنه با پانتومیم و فقط گفتن یک کلمه. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو میتونین رد کنین ولی یادتون نره فقط یک کلمه میتونین توضیح بدین'
-	else if (levelNumber === 3) span.textContent = 'توی دور سوم. هربازیکن باید سعی کنه با پانتومیم و بدون حرف زدن. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو میتونین رد کنین .لی یادتون نره نباید صبحت کنین'
-	
+	else if (levelNumber === 2) {
+		span.textContent = 'توی دور دوم. هربازیکن باید سعی کنه با پانتومیم و فقط گفتن یک کلمه. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو میتونین رد کنین ولی یادتون نره فقط یک کلمه میتونین توضیح بدین'
+		secondLevelMessageShowed = true
+	}
+	else if (levelNumber === 3) {
+		span.textContent = 'توی دور سوم. هربازیکن باید سعی کنه با پانتومیم و بدون حرف زدن. کلمات رو به همتیمیش بفهمونه. و فقط یه دقیقه فرصت دارین. توی این دور کلمات رو میتونین رد کنین .لی یادتون نره نباید صبحت کنین'
+		thirdLevelMessageShowed = true
+	}
 	const button = document.createElement('button')
 	button.classList.add('button')
 	button.classList.add('start')
@@ -301,7 +356,7 @@ function createGamePageSection (word) {
 	const right_btn = document.createElement('button')
 	right_btn.classList.add('right-guess')
 	right_btn.classList.add('button')
-	right_btn.textContent = 'Right'
+	right_btn.textContent = 'درسته'
 	right_btn.addEventListener('click' , () => {
 		let shownWord = document.querySelector('.guess-word')
 		guessedWords.push(shownWord.textContent)
@@ -312,7 +367,7 @@ function createGamePageSection (word) {
 	const wrong_btn = document.createElement('button')
 	wrong_btn.classList.add('wrong-guess')
 	wrong_btn.classList.add('button')
-	wrong_btn.textContent = 'Wrong'
+	wrong_btn.textContent = 'غلطه'
 	wrong_btn.addEventListener('click' , () => {
 		let shownWord = document.querySelector('.guess-word')
 		wrongWords.push(shownWord.textContent)
@@ -400,17 +455,23 @@ function createLevelCompletedSection () {
 
 		level_completed_div.append(div)
 	})
+	const button = document.createElement('button')
+	button.classList.add('next-level-btn')
+	button.classList.add('button')
+
 	if (levelNumber < 3) {
-		const button = document.createElement('button')
-		button.classList.add('next-level-btn')
-		button.classList.add('button')
-		button.textContent = "Next Level"
+		button.textContent = "مرحله بعدی"
 		button.addEventListener('click' , () => {
 			goToNextLevel()
 		})
-
-		level_completed_div.append(button)
 	}
+	else if (levelNumber === 3) {
+		button.textContent = "دوباره"
+		button.addEventListener('click' , () => {
+			document.reload()
+		})
+	}
+	level_completed_div.append(button)
 }
 
 function goToNextLevel () {
