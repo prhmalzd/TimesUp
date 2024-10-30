@@ -301,7 +301,7 @@ function createGameDescription () {
 	})
 
 	ready_page_div.append(span)
-	ready_page_div.append(button)
+	setTimeout(() => ready_page_div.append(button), 1000)
 }
 
 function readyPlayer () {
@@ -471,7 +471,7 @@ function createLevelCompletedSection () {
 			document.reload()
 		})
 	}
-	level_completed_div.append(button)
+	setTimeout(() => level_completed_div.append(button), 1000)
 }
 
 function goToNextLevel () {
